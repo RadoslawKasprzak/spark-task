@@ -1,0 +1,94 @@
+TASK
+
+In general:
+
+As an input you get the list of TRANSACTIONS that are partially guaranteed by different GUARANTORS.
+As an output we want to get the information given separately for each country regarding which GUARANTORS guarantee how much money belonging to different types of classes of transactions, together with averages by country.
+
+Description:
+
+In the fictional company there is a set of all transactions (deals). 
+1. Transactions (deals) are uniquely identified by their IDs. 
+2. They have:
+   - sender name,
+   - receiver name,
+   - the amount of money which is transferred from the sender to the receiver,
+   - the date the transaction (deal) was initiated.
+3. Each transaction (deal) is allocated to some country (department of the company).
+4. Transactions (deals) can be performed in different currencies.
+5. The status of each transaction (deal) can be PENDING (planned to take place in the future), OPEN (in progress) or CLOSED (done).
+6. Each transaction (deal) is guaranteed by some guarantors, in case of the situation where the sender is not able to pay the money to the receiver.
+7. There can be many guarantors for the same transaction (deal). Similarly, one guarantor can guarantee many transactions (deals).
+8. Each guarantor guarantees the transaction (deal) only partially, which is defined as a percentage of the total amount of the transaction (deal).
+
+Required output:
+
+Please, provide a report where for each country separately:
+1. You list out all of the guarantors.
+2. You specify how much money belonging to the transactions (deals) classified as type: CLASS_A, CLASS_B, CLASS_C and CLASS_D they guarantee.
+3. For each row also provide the information about average amounts of money guaranteed by a single guarantor for the transactions (deals) classified as type: CLASS_A, CLASS_B, CLASS_C and CLASS_D.   
+
+Detailed requirements:
+
+1. Only OPEN transactions and the ones from the last month need to be reported.
+2. You should report only the transactions (deals) for which receivers belong to the receivers registry (scope of the reporting).
+3. In the set of transactions (deals) sometimes some transactions (deals) are given twice or more. Please, remember about removing all of the duplicates.
+4. All transactions (deals) report their amounts of money in local currencies. But the final output should be compiled in EUR. You can take the information about latest exchange rates from the exchanges rates registry.
+5. The receivers registry and the exchange rates registry change from time to time. Please, always use the latest data (from the latest partition).
+
+General remarks: 
+
+1. Please, provide the implementations in both Spark DataFrames API (the most important one) and Spark SQL (SQL / HQL).
+2. If possible, your solution should be based on tables. 
+   - You should introduce partitioning by "partition date". 
+   - Every day the current state of all transactions (deals) is given to you in a new parition (partitioned by "partition date"). 
+   - As for the receivers registry and the exchange rates registry from time to time you get a new partition (partitioned by "partition date") with this information. 
+   - Every day you produce a new report and you put it into a new partition (partitioned by "partition date").   
+3. Remember about the tests (unit tests or integration / e2e tests - whatever you think will work the best in this case).
+4. Prepare the test data so that the correctness of your job can be proved.
+5. You can modify slightly the assumptions if at any point you feel stuck.
+6. Whenever you have doubts, please, comment the code regarding how you understood the assumptions.
+7. Deliver the solution of the task as a link to a respective repository on your GitHub account.
+
+Schemas:
+
+TRANSACTIONS (INPUT):
+
+TRANSACTION_ID
+GUARANTORS: ARRAY[JSON(NAME: STRING, PERCENTAGE: DECIMAL)]
+SENDER_NAME
+RECEIVER_NAME
+TYPE: CLASS_A | CLASS_B | CLASS_C | CLASS_D
+COUNTRY
+CURRENCY
+AMOUNT: DECIMAL
+STATUS: PENDING | OPEN | CLOSED
+DATE
+PARTITION_DATE (PARTITIONING COLUMN)
+
+RECEIVERS_REGISTRY (INPUT):
+
+RECEIVER_ACCOUNT
+COUNTRY
+PARTITION_DATE (PARTITIONING COLUMN)
+
+EXCHANGE_RATES (INPUT):
+
+FROM_CURRENCY
+TO_CURRENCY
+RATE: DECIMAL
+PARTITION_DATE (PARTITIONING COLUMN)
+
+GUARANTEES (OUTPUT):
+
+GUARANTOR_NAME
+CLASS_A: DECIMAL
+CLASS_B: DECIMAL 
+CLASS_C: DECIMAL
+CLASS_D: DECIMAL
+AVG_CLASS_A: DECIMAL
+AVG_CLASS_B: DECIMAL 
+AVG_CLASS_C: DECIMAL
+AVG_CLASS_D: DECIMAL
+COUNTRY
+PARTITION_DATE (PARTITIONING COLUMN)
