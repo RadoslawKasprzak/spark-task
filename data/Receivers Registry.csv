@@ -1,0 +1,11 @@
+RECEIVER_NAME;COUNTRY;PARTITION_DATE (PARTITIONING COLUMN);ISVALID
+COMP_1;ES;15.01.2024;Latest available partition only
+COMP_2;ES;15.01.2024;Latest available partition only
+COMP_3;ES;15.01.2024;Latest available partition only
+COMP_4;ES;15.01.2024;Latest available partition only
+COMP_5;US;15.01.2024;Latest available partition only
+COMP_6;US;15.01.2024;Latest available partition only
+COMP_7;US;15.01.2024;Latest available partition only
+COMP_1;ES;1.02.2023;Outdated
+COMP_2;ES;1.02.2023;Outdated
+COMP_7;US;1.02.2023;Outdated
