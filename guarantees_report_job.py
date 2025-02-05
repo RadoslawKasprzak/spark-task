@@ -31,10 +31,7 @@ class GuaranteesReportJob:
         return transactions_df
 
     def join_with_receivers(self, transactions_df: DataFrame, receivers_df: DataFrame) -> DataFrame:
-        """
-        Łączy transakcje z rejestrem odbiorców (używamy najnowszej partycji rejestru).
-        Tylko transakcje, których odbiorca występuje w rejestrze, zostają uwzględnione.
-        """
+        
         latest_receivers = self.get_latest_partition(receivers_df)
 
         transactions_alias = transactions_df.alias("t")
